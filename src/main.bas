@@ -13,8 +13,22 @@ Dim Shared As Single player_x,player_y,player_speed
 
 player_x = 0
 player_y = 0
-player_speed = 30
+player_speed = 0.3
 Const player_size = CellSize
+
+Sub CheckWallColl(ByRef player_x As Single,ByRef player_y As Single)
+If player_x > 26 Then
+   player_x = 0
+ElseIf player_x < 0 Then
+    player_x = 26
+ElseIf player_y > 25 Then
+    player_y = 0
+ElseIf player_y < 0 Then
+    player_y = 25
+
+End If
+
+End Sub
 
 Sub HandleUserInput(ByRef player_x As Single, ByRef player_y As Single,ByRef player_speed As Single)
 If MultiKey(SC_LEFT) Then
@@ -33,7 +47,7 @@ End Sub
 Sub DrawPlayer(player_x as Integer,player_y as Integer,size as Integer)
 
 '' von player standort aus linie zeichnen
-Line(player_x ,player_y)-(player_x + player_size, player_y + player_size), RGB(0,255,0), BF
+Line(player_x * player_size ,player_y * player_size)-(player_x * player_size + player_size, player_y * player_size + player_size), RGB(0,255,0), BF
 
 End Sub
 
@@ -55,6 +69,7 @@ Do
 Screenlock
 Cls RGB(0,0,0)
 DrawPlayer(player_x,player_y,player_size)
+CheckWallColl(player_x,player_y)
 HandleUserInput(player_x,player_y,player_speed)
 DrawGrid(Rows,Cols,CellSize)
 Screenunlock
